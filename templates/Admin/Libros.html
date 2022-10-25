@@ -1,0 +1,84 @@
+{%include 'Admin/Cabezera.html'%}
+<br><br>
+
+<h2>Bienvenido {{session["usuario"]}}<!--de la variable sesion en app.py me va a traer el usuario--></h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card"> <!--una tarjeta donde va ir nuestra info-->
+                
+                <div class="class-header"><!--datos de los libros-->
+
+                </div>
+                <!--inicio del formulario-->
+                <!--a donde va ir y que metodo va a utilizar  enctype: enfordata, enviar la informacion, para trabajar con imagenes-->
+                <!--cuando se le da click en el boton agregar hace una accion-->
+                <form action="Admin/Libros/Guardar" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="">Nombre</label>
+                        <input type="text" class="form-control" name="nombre_Libro" placeholder="nombre del libro">
+                    </div>
+                    <div class="mb-3">
+                        <label for="">Imagen</label>
+                        <input type="file" class="form-control" name="imagen_Libro" placeholder="imagen">
+                    </div>
+                    <div class="mb-3">
+                        <label for="">URL</label>
+                        <input type="text" class="form-control" name="url_Libro" placeholder="Direccion Libro">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar</button><!--submit es agregar-->
+                </form> 
+
+            </div>
+
+        </div>
+        <!--mostramos los datos de la base de datos-->
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <th>ID</th><!--encabezado de la tabla-->
+                    <th>Nombre</th>
+                    <th>Imágen</th>
+                    <th>URL</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                    {% for dato in libros %} <!---para que me muestre la informacion de los datos-->
+                <tr>
+                    <td>{{dato[0]}}</td>
+                    <td>{{dato[1]}}</td>
+                    <td>{{dato[2]}}</td>
+                    <td>{{dato[3]}}</td>
+                    <td>
+                        <!--el boton-->
+                        <form action="/Admin/Libros/Editar" method="post">
+                            <!--hidden = ocultar-->
+                            <input type="hidden" name="id" value="{{dato[0]}}">
+                            <!--agregamos el boton-->
+                            <button type="submit" class="btn btn-success">Actualizar</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/Admin/Libros/Eliminar" method="post">
+                            <!--hidden = ocultar-->
+                            <input type="hidden" name="id" value="{{dato[0]}}"> <!--este es el dato de la llave primaria posicion 0-->
+                            <!--agregamos el boton-->
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>  
+                {%endfor%}<!--finalice ciclo for-->
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+{%include 'Sitio/pie_depagina.html'%}
